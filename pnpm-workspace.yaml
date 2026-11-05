@@ -1,0 +1,9 @@
+packages:
+  - '.'
+storeDir: '.pnpm-store'
+enableGlobalVirtualStore: false
+nodeLinker: hoisted
+packageImportMethod: copy
+allowBuilds:
+  esbuild: true
+  core-js: false
