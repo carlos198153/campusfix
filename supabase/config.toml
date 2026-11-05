@@ -1,0 +1,17 @@
+project_id = "campusfix"
+
+[auth]
+enable_signup = false
+site_url = "http://localhost:5173"
+additional_redirect_urls = ["http://localhost:5173/restablecer", "http://localhost:5173/?recovery=1"]
+
+# Estas funciones exigen JWT y verifican además sesión/rol/perfil activo.
+[functions.admin-users]
+verify_jwt = true
+
+[functions.classify-incident]
+verify_jwt = true
+
+# Único endpoint público: NIP servidor y cuotas persistentes antes de validar datos.
+[functions.register-admin]
+verify_jwt = false

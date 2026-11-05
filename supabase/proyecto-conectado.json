@@ -1,0 +1,43 @@
+{
+  "project_id": "kxostzjlzvydobgngcdg",
+  "name": "CampusFix",
+  "region": "us-east-1",
+  "api_url": "https://kxostzjlzvydobgngcdg.supabase.co",
+  "dashboard_url": "https://supabase.com/dashboard/project/kxostzjlzvydobgngcdg",
+  "migrations_applied": [
+    "campusfix",
+    "student_reports"
+  ],
+  "edge_functions": [
+    "register-admin",
+    "admin-users"
+  ],
+  "configuration_status": "configured_ready_for_first_admin",
+  "verified_date": "2026-11-05",
+  "remote_migrations": [
+    {
+      "version": "20261105222213",
+      "name": "campusfix"
+    },
+    {
+      "version": "20261105222523",
+      "name": "student_reports"
+    }
+  ],
+  "checks": {
+    "database_rls_enabled": true,
+    "private_photo_bucket": true,
+    "auth_http_status": 200,
+    "anonymous_reports_http_status": 401,
+    "admin_enrollment_configured": true,
+    "public_signup_disabled": true,
+    "admin_pin_verification_http_status": 200,
+    "email_auth_enabled": true,
+    "allowed_origin_preflight_http_status": 204,
+    "unapproved_origin_http_status": 403,
+    "local_app_http_status": 200,
+    "active_admin_accounts": 0,
+    "real_account_login_tested": false,
+    "real_report_and_photo_tested": false
+  }
+}
