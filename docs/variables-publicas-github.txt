@@ -1,0 +1,7 @@
+# Variables públicas del proyecto CampusFix para GitHub Actions.
+# Settings > Secrets and variables > Actions > Variables.
+# Estos dos valores identifican el proyecto; el acceso a datos requiere sesión y RLS.
+# No agregar aquí ADMIN_SETUP_PIN ni claves privadas del servidor.
+
+VITE_SUPABASE_URL=https://kxostzjlzvydobgngcdg.supabase.co
+VITE_SUPABASE_ANON_KEY=sb_publishable_b84Q6MiMsRptD_Y_3nMOqw_KnFz8CYd
