@@ -1,0 +1,79 @@
+name: Publicar CampusFix en GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: github-pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pages: read
+    steps:
+      - name: Obtener código
+        uses: actions/checkout@v6
+
+      - name: Preparar Node.js 22
+        uses: actions/setup-node@v6
+        with:
+          node-version: "22"
+
+      - name: Preparar pnpm fijado en package.json
+        uses: pnpm/action-setup@v6
+        with:
+          cache: true
+
+      - name: Instalar dependencias
+        run: pnpm install --frozen-lockfile
+
+      - name: Ejecutar pruebas locales
+        run: pnpm test
+
+      - name: Consultar configuración de Pages
+        id: pages
+        uses: actions/configure-pages@v5
+
+      - name: Compilar para Pages
+        env:
+          VITE_APP_BASE_PATH: ${{ vars.VITE_APP_BASE_PATH || format('{0}/', steps.pages.outputs.base_path) }}
+          VITE_USE_HASH_ROUTER: "true"
+          VITE_SUPABASE_URL: ${{ vars.VITE_SUPABASE_URL }}
+          VITE_SUPABASE_ANON_KEY: ${{ vars.VITE_SUPABASE_ANON_KEY }}
+        shell: bash
+        run: |
+          if [[ -n "$VITE_SUPABASE_URL" && -z "$VITE_SUPABASE_ANON_KEY" ]] || [[ -z "$VITE_SUPABASE_URL" && -n "$VITE_SUPABASE_ANON_KEY" ]]; then
+            echo "::error::Configura las dos variables públicas de Supabase o deja ambas vacías para una demostración."
+            exit 1
+          fi
+          if [[ -z "$VITE_SUPABASE_URL" ]]; then
+            echo "::notice::La publicación utilizará la demostración local; no se conectará a Supabase."
+          fi
+          pnpm build
+
+      - name: Subir dist como artefacto de Pages
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Publicar artefacto
+        id: deployment
+        uses: actions/deploy-pages@v4
